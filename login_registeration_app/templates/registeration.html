@@ -1,0 +1,27 @@
+{% extends 'basetheam.html%}
+{% block content %}
+
+<div class='container' >
+<form action="/registeration" method = 'POST'>
+<label for="first_name">First Name</label>
+<input type="text" name="first_name">
+<label for="last_name">Last Name</label>
+<input type="text" name="last_name">
+<label for="user_name">User Name</label>
+<input type="text" name="user_name">
+<label for="email">Email</label>
+<input type="email" name="email">
+<label for="password">password</label>
+<input type="password" name="password">
+<label for="birth_date">Birth Date</label>
+<input type ='datetime' name = ' birth_date'>
+<input type="radio"  name="gender" value="male">
+<label for="male">Male</label><br>
+<input type="radio"  name="gender" value="female">
+<label for="female">Female</label><br>
+<input type="radio"  name="gender" value="other">
+<label for="other">Other</label>
+<input type="submit" value="register"> 
+</form>
+</div>
+{% endblock %}
