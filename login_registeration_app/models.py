@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
-from login_registeration_app.models import User,Role
 import re
 class UserManger(models.Manager):
     def basic_validator(self, postData):
@@ -25,6 +24,8 @@ class UserManger(models.Manager):
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 # Create your models here.
+class Role(models.Model):
+    role=models.CharField(max_length=5)
 class User(models.Model):
     first_name=models.CharField(max_length=45)
     last_name=models.CharField(max_length=45)
@@ -33,8 +34,6 @@ class User(models.Model):
     image = models.ImageField(upload_to='images/',default='pic.png')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    followers=models.ManyToManyField(User,related_name="following")
+    followers=models.ManyToManyField('self',related_name="following")
     role=models.ForeignKey(Role,related_name="users",on_delete=models.CASCADE)
     objects = UserManger() 
-class Role(models.Model):
-    role=models.CharField(max_length=5)

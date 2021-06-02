@@ -19,9 +19,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include('login_registeration_app.urls')),
-    path('home/',include('music_app')),
+    # path('admin/', admin.site.urls),
+    # path('',include('login_registeration_app.urls')),
+    # path('home/',include('music_app')),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
