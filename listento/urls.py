@@ -20,11 +20,14 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     path('admin/', admin.site.urls),
     path('',include('login_registeration_app.urls')),
     path('home/',include('music_app')),
 
+=======
+>>>>>>> parent of af794c2 (hello)
 =======
 >>>>>>> parent of af794c2 (hello)
     # path('admin/', admin.site.urls),
