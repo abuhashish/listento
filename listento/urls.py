@@ -18,3 +18,19 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
+<<<<<<< HEAD
+=======
+urlpatterns = [
+<<<<<<< HEAD
+    # path('admin/', admin.site.urls),
+    path('',include('login_registeration_app.urls')),
+=======
+    path('admin/', admin.site.urls),
+    # path('',include('login_registeration_app.urls')),
+>>>>>>> 832de0f2e60a44aae95db97cb7eca4425bd32039
+    # path('home/',include('music_app')),
+]
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                            document_root=settings.MEDIA_ROOT)
+>>>>>>> parent of 3f45587 (hello)
