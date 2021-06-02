@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
+from login_registeration_app.models import User,Role
 import re
 class UserManger(models.Manager):
     def basic_validator(self, postData):
@@ -32,4 +33,8 @@ class User(models.Model):
     image = models.ImageField(upload_to='images/',default='pic.png')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    followers=models.ManyToManyField(User,related_name="following")
+    role=models.ForeignKey(Role,related_name="users",on_delete=models.CASCADE)
     objects = UserManger() 
+class Role(models.Model):
+    role=models.CharField(max_length=5)
