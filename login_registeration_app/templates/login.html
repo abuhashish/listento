@@ -1,12 +1,13 @@
-{% extends 'basetheam.html'%}
+{% extends 'basetheam.html' %}
 
 {%block content%}
-<div class="container">
-    <form action="lgoin">
+<div class="container" >
+    <form action="lgoin" method="POST">
     <label for="username">Username</label>
-    <input type="text" name="username">
+    <input type="text" name="username" class="form-control" style="width: 300px;">
     <label for="Password">Password</label>
-    <input type="password" name="passwd">
+    <input type="password" name="passwd"class="form-control" style="width: 300px;">
+    <input type="submit" value="Login" class="btn btn-primary" style="margin-top: 10px;">
     </form>
 </div>
 {%endblock%}
