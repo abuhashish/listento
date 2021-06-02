@@ -3,6 +3,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 urlpatterns = [
+        path('',views.root),
+        path('login',views.login),
+        path('register',views.register),
 
 ]
 if settings.DEBUG:
