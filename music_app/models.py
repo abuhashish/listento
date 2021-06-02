@@ -12,7 +12,7 @@ class Music(models.Model):
     uploaded_by=models.ForeignKey(User,related_name="songs",on_delete=models.CASCADE)
     
 class Star(models.Model):
-    star=models.IntegerField(max_length=5)
+    star=models.IntegerField()
 class Rate(models.Model):
     user=models.ForeignKey(User,related_name="Rates",on_delete=models.CASCADE)
     music=models.ForeignKey(Music,related_name="Rates",on_delete=models.CASCADE)
