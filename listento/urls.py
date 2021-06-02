@@ -20,14 +20,9 @@ from django.contrib import admin
 from django.conf.urls.static import static
 
 urlpatterns = [
-<<<<<<< HEAD
-    # path('admin/', admin.site.urls),
-    path('',include('login_registeration_app.urls')),
-=======
     path('admin/', admin.site.urls),
-    # path('',include('login_registeration_app.urls')),
->>>>>>> 832de0f2e60a44aae95db97cb7eca4425bd32039
-    # path('home/',include('music_app')),
+    path('',include('login_registeration_app.urls')),
+    path('home/',include('music_app')),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
