@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render,HttpResponse
 def root(request):
     return redirect('/login')
 def login (request):
+    print(5)
     return render(request,"login.html")
 def register(request):
     return render(request,'registeration.html')
