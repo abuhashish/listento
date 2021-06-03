@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render,HttpResponse
 
 # Create your views here.
 def root(request):
+    print(5)
     return redirect('/login')
 def login (request):
     print(5)
