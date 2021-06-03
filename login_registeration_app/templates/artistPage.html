@@ -18,6 +18,36 @@
     Ta'a Nensa:  <source src="" type="audio/"> <button>Download</button>
     Badak Maleoun Seneh: <source src="" type="audio/"> <button>Download</button>
 </audio>
+<div class="form-group">
+<form action="uploadmusic" method="POST">
+    <label for="songtitle">Song Title</label>
+    <input type="text" name="songtitle" class="form-control"><br>
+    <label for="songwriter">Song Writer</label>
+    <input type="text" name="songwriter" class="form-control"><br>
+    <label for="songcomposer">Song Composer</label>
+    <input type="text" name="songcomposer" class="form-control"><br>
+    <label for="songmp3">Song MP3</label>
+    <input type="file" name="songmp3" class="form-control"><br>
+    <input type="submit" value="upload" class="btn btn-dark" style="margin-left: 140px;">
+</form>
+</div>
+<div class="form-group">
+    
+    <ul class="list-group list-group-flush" name="top10">
+        <li class="list-group-item" >Artist Release</li>
+        <li class="list-group-item"><a href="/songpage">American flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li>
+        <li class="list-group-item"><a href="/songpage">Greater flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li>
+        <li class="list-group-item"><a href="/songpage">Lesser flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
+        <li class="list-group-item"><a href="/songpage">Andean flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li>
+        <li class="list-group-item"><a href="/songpage">Chilean flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li>
+        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
+        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
+        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
+        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
+        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
+    </ul>
+
+</div>
 <a href="/artists">back</a>
 </div>
 {%endblock%}
