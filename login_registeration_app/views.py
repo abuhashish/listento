@@ -8,12 +8,32 @@ import bcrypt
 def root(request):
     return redirect('/login')
 def login (request):
-    return render(request,"login.html")
+    if 'user' not in request.session:
+        return render(request,"login.html")
+    return redirect('/home')
+def logins(req):
+    
+    user = User.objects.filter(username = req.POST['username'])
+    psswd = req.POST['passwd'] 
+    if user:
+        logged_user=user[0]
+        if bcrypt.checkpw(psswd.encode(), logged_user.password.encode()):
+            req.session['user']={
+                'fname':logged_user.first_name,
+                'lname':logged_user.last_name,
+                'id':logged_user.id,
+            }
+        return render(req,'home.html')
+    return redirect('/')
 def register(request):
     return render(request,'registeration.html')
+def home(req):
+    if 'user' in req.session:
+        return render(req,'home.html')
+    return redirect('/')
 def adduser(request):
     if 'user' in request.session :
-        return redirect('/thoughts')
+        return redirect('/register')
     errors=User.objects.basic_validator(request.POST)
     if len(errors)>0:
         for key,value in errors.items():
@@ -38,13 +58,18 @@ def adduser(request):
             'lname':user.last_name,
         }
         return redirect('/home')
-def home(request):
-    return render(request,'home.html')
 def artists(request):
     return render(request,'artistspage.html')
 def userprofile(req):
-    return render(req,'userprofile.html')
+    context={
+        'x':User.objects.get(id=req.session['user']['id'])
+    }
+    
+    return render(req,'userprofile.html',context)
 def artistprofile(req):
     return render(req,'artistpage.html')
 def songpage(req):
     return render(req,'songpage.html')
+def logout(req):
+    req.session.clear()
+    return redirect('/')

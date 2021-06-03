@@ -5,12 +5,15 @@ from . import views
 urlpatterns = [
         path('',views.root),
         path('login',views.login),
-        path('register',views.register),
         path('home',views.home),
+        path('register',views.register),
+        path('logins',views.logins),
         path('artists', views.artists),
         path('userprofile', views.userprofile),
         path('artistprofile', views.artistprofile),
-        path('songpage',views.songpage)
+        path('songpage',views.songpage),
+        path('adduser',views.adduser),
+        path('logout',views.logout)
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,

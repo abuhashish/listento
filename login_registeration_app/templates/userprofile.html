@@ -2,14 +2,15 @@
 
 {%block content%}
 <div class="card">
-    <img src="static/imgs/original.jpeg" alt="rebhi profile picture" style="border-radius: 50%; width: 100px; height: 100px;">
-    <h1>Rebhi Abu_harb</h1>
+    <img src="{{x.image.url}}" alt="rebhi profile picture" style="border-radius: 50%; width: 100px; height: 100px;">
+    <h1>{{request.session.user.fname}} {{request.session.user.lname}}</h1>
 
-    <p class="Bio">hey my name is rebhi from palestine, and i love music</p>
+    <p class="Bio">hey my name is {{request.session.user.fname}} from palestine, and i love music</p>
 
     <p>Student At Birzeit University</p>
 
     <p><button>Follow</button></p>   <p><button>Edit</button></p>
+    <a href="/artistreq">request to be an artist</a>
 </div>
 
 {%endblock%}
