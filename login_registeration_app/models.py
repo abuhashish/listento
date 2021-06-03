@@ -26,14 +26,21 @@ class UserManger(models.Manager):
 # Create your models here.
 class Role(models.Model):
     role=models.CharField(max_length=5)
+
+
+class Gender(models.Model):
+    gender=models.CharField(max_length=6)
 class User(models.Model):
+    username=models.CharField(max_length=45)
     first_name=models.CharField(max_length=45)
     last_name=models.CharField(max_length=45)
     password = models.CharField(max_length=45)
     email = models.CharField(max_length=45)
+    birh_date=models.DateTimeField()
     image = models.ImageField(upload_to='images/',default='pic.png')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    gender=models.ForeignKey(Gender,related_name="users",on_delete=models.CASCADE)
     followers=models.ManyToManyField('self',related_name="following")
     role=models.ForeignKey(Role,related_name="users",on_delete=models.CASCADE)
     objects = UserManger() 
