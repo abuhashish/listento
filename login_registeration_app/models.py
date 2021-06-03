@@ -8,9 +8,9 @@ class UserManger(models.Manager):
         # add keys and values to errors dictionary for each invalid field
         if postData['password'] != postData['confirmPass']:
             errors['notsame']="password doesnt equal confirmation"
-        if len(postData['fname'])<2:
+        if len(postData['first_name'])<2:
             errors['short']="fname should be atleast 2 letters"
-        if len(postData['lname'])<2:
+        if len(postData['last_name'])<2:
             errors['shorts']="lname should be atleast 2 letters"
         if len(User.objects.filter(email=postData['email']))!=0:
             errors['unique']="email is not unqiue" 

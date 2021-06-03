@@ -23,7 +23,17 @@ def adduser(request):
         return redirect('/')
     else:
         hashpassword= bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
-        user=User.objects.create(first_name=request.POST['first_name'],last_name=request.POST['last_name'],password=hashpassword,email=request.POST['email'],username=request.POST['user_name'],birth_date=request.POST['birth_date'])
+        user=User.objects.create(
+        first_name=request.POST['first_name'],
+        last_name=request.POST['last_name'],
+        password=hashpassword,
+        email=request.POST['email'],
+        username=request.POST['user_name'],
+        birh_date=request.POST['birth_date'],
+        gender=Gender.objects.get(id=request.POST['gender']),
+        image=request.FILES['img'],
+        role=Role.objects.get(id=2)
+        )
         request.session['user']={
             'id':user.id,
             'fname':user.first_name,
