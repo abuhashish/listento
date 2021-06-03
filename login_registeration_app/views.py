@@ -6,6 +6,14 @@ def root(request):
 def login (request):
     return render(request,"login.html")
 def register(request):
-    return HttpResponse('hello')
-
-    
+    return render(request,'registeration.html')
+def home(request):
+    return render(request,'home.html')
+def artists(request):
+    return render(request,'artistspage.html')
+def userprofile(req):
+    return render(req,'userprofile.html')
+def artistprofile(req):
+    return render(req,'artistpage.html')
+def songpage(req):
+    return render(req,'songpage.html')
