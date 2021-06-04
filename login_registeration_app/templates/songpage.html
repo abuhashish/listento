@@ -1,39 +1,99 @@
 {% extends 'basetheam.html' %}
 
 {%block content%}
+<style>
 
+
+    .heading {
+    font-size: 25px;
+    margin-right: 25px;
+    }
+
+    .fa {
+    font-size: 25px;
+    }
+
+    .checked {
+    color: orange;
+    }
+
+    /* Three column layout */
+    .side {
+    float: left;
+    width: 15%;
+    margin-top: 10px;
+    }
+
+    .middle {
+    float: left;
+    width: 70%;
+    margin-top: 10px;
+    }
+
+    /* Place text to the right */
+    .right {
+    text-align: right;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    }
+
+    /* The bar container */
+    .bar-container {
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: white;
+    }
+
+    /* Individual bars */
+    .bar-5 {width: 60%; height: 18px; background-color: #04AA6D;}
+    .bar-4 {width: 30%; height: 18px; background-color: #2196F3;}
+    .bar-3 {width: 10%; height: 18px; background-color: #00bcd4;}
+    .bar-2 {width: 4%; height: 18px; background-color: #ff9800;}
+    .bar-1 {width: 15%; height: 18px; background-color: #f44336;}
+
+    /* Responsive layout - make the columns stack on top of each other instead of next to each other */
+    @media (max-width: 400px) {
+    .side, .middle {
+        width: 100%;
+    }
+    /* Hide the right column on small screens */
+    .right {
+        display: none;
+    }
+    }
+</style>
 <div class="card">
 
     <img src="static/imgs/Melhem-Barakat.jpeg" alt="Melhem-Barakat photo" style="border-radius: 50%; width: 100px; height: 100px;">
-    <h1><a href="artistpage"></a> Melhem Barakat </a></h1>
-    <p>Ta'a Nensa</p>
+    <h1><a href="artistpage"> Melhem Barakat </a></h1>
     <p>Production Date: 12 Years Ago</p>
+    {%for i in allmusic%}
+    <h1>{{i.song_name}}</h1>   
+    <audio controls>
+        <source src="{{i.music.url}}" type="audio/ogg">
+        {%endfor%}
+    </audio>
+</div>
 
+<div class="container" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
-<h3>Albums</h3>
-<audio controls>
-    Ta'a Nensa:  <source src="" type="audio/"> 
     <span class="heading">User Rating</span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <hr style="border:3px solid #f1f1f1">
-
-    Badak Maleoun Seneh: <source src="" type="audio/">
-                <span class="heading">User Rating</span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <hr style="border:3px solid #f1f1f1"> 
-
-            </audio>
-            <input type="submit" value="Back" style="width: 100px; height: 30px; margin-left: 670px;">
-                </div>
-
-
+    <span class="fa fa-star checked"></span>
+    <span class="fa fa-star checked"></span>
+    <span class="fa fa-star checked"></span>
+    <span class="fa fa-star checked"></span>
+    <span class="fa fa-star"></span>
+    <p>4.1 average based on 254 reviews.</p>
+    <hr style="border:3px solid #f1f1f1">
+    
+    
+</div>
+<a href="/home" style="width: 100px; height: 30px; margin-left: 670px; ">Back</a>
 {%endblock%}

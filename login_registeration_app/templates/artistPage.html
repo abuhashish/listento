@@ -3,7 +3,7 @@
 {%block content%}
 
 <div class="card">
-
+    
     <img src="static/imgs/Melhem-Barakat.jpeg" alt="Melhem-Barakat photo" style="border-radius: 50%; width: 100px; height: 100px;">
     <h1>Melhem Barakat</h1>
     <input type="submit" value="Follow" style="width: 100px; height: 30px; margin-left: 670px;">
@@ -12,14 +12,15 @@
     United States.</p>
 <p>Born: August 15, 1945,Lebanon</p>
 <p>Died: October 28, 2016,Beiurt</p>
-<h3>Albums</h3>
-<p>Ta'a Nensa</p>
-<audio controls>
-    Ta'a Nensa:  <source src="" type="audio/"> <button>Download</button>
-    Badak Maleoun Seneh: <source src="" type="audio/"> <button>Download</button>
-</audio>
+{%for i in allmusic%}
+<h3>{{i.song_name}}</h3>
+        <audio controls>
+        <source src="{{i.music.url}}" type="audio/ogg">
+        </audio>
+        {%endfor%}
 <div class="form-group">
-<form action="uploadmusic" method="POST">
+<form action="addmusic" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
     <label for="songtitle">Song Title</label>
     <input type="text" name="songtitle" class="form-control"><br>
     <label for="songwriter">Song Writer</label>
@@ -32,21 +33,13 @@
 </form>
 </div>
 <div class="form-group">
-    
     <ul class="list-group list-group-flush" name="top10">
         <li class="list-group-item" >Artist Release</li>
-        <li class="list-group-item"><a href="/songpage">American flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li>
-        <li class="list-group-item"><a href="/songpage">Greater flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li>
-        <li class="list-group-item"><a href="/songpage">Lesser flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
-        <li class="list-group-item"><a href="/songpage">Andean flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li>
-        <li class="list-group-item"><a href="/songpage">Chilean flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li>
-        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
-        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
-        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
-        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
-        <li class="list-group-item"><a href="/songpage">James's flamingo</a> <input type="submit" value="Delete" class="btn btn-danger"> <input type="submit" value="Update" class="btn btn-success"></li> 
+        {%for i in allmusic%}
+        <li class="list-group-item"><a href="/songpage">{{i.song_name}}</a> <form action="delete/{{i.id}}" method="POST">{% csrf_token %}<input type="submit" value="Delete" class="btn btn-danger"> </form> </li>
+        
+        {%endfor%}
     </ul>
-
 </div>
 <a href="/artists">back</a>
 </div>

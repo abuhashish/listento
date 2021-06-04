@@ -9,6 +9,7 @@ class Music(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     lyrics=models.TextField()
+    music = models.FileField(upload_to='audio/', blank=True)
     uploaded_by=models.ForeignKey(User,related_name="songs",on_delete=models.CASCADE)
     
 class Star(models.Model):

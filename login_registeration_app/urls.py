@@ -13,7 +13,9 @@ urlpatterns = [
         path('artistprofile', views.artistprofile),
         path('songpage',views.songpage),
         path('adduser',views.adduser),
-        path('logout',views.logout)
+        path('logout',views.logout),
+        path('addmusic', views.addmusic),
+        path('delete/<int:id>',views.delete)
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
