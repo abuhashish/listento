@@ -9,32 +9,18 @@
             <div class="row text-center">
         
             <!--Grid column-->
+            {%for i in all_artists%}
             <div class="col-md-6 mb-4">
         
-                <h2 class="my-5 h2"><a href="/artistprofile"> Melhim Barakat</a></h2>
+                <h2 class="my-5 h2"><a href="/artistprofile/{{i.id}}"> {{i.first_name}} {{i.last_name}}</a></h2>
+                
         
-                <img class="rounded-circle" alt="100x100" src="static/imgs/Melhem-Barakat.jpeg"
+                <img class="rounded-circle" alt="100x100" src="{{i.image.url}}"
                 data-holder-rendered="true" style="width: 300px;height: 300px;">
         
             </div>
-            <!--Grid column-->
-        
-            <!--Grid column-->
-            <div class="col-md-6 mb-4">
-        
-                <h2 class="my-5 h2"><a href="/artistprofile"> Um Kalthoum </a></h2>
-        
-                <img class="rounded-circle" alt="100x100" src="static/imgs/um-kalthom.jpeg"
-                data-holder-rendered="true" style="width: 300px;height: 300px;">
-        
-            </div>
-
-            
-            <!--Grid column-->
-        
-            </div>
-            <!--Grid row-->
-        
-        </div>
+            {%endfor%}
     </div>
+</div>
+</div>
     {%endblock%}

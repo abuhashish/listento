@@ -27,7 +27,7 @@
     <ul class="list-group list-group-item" style="background-color: rgb(231, 224, 224); margin-top: 50px;" >
     <li class="list-group-item" style="text-align: center; color: cadetblue;"> New Release</li>
     {%for i in allmusic%}
-    <li class="list-group-item" style="text-align: center;"><a href="/songpage" style="color: rgb(24, 24, 24);"> {{i.song_name}}</a></li>
+    <li class="list-group-item" style="text-align: center;"><a href="/songpage/{{i.id}}" style="color: rgb(24, 24, 24);"> {{i.song_name}}</a></li>
     {%endfor%}
     </ul>
 </div>
@@ -36,7 +36,7 @@
     <ul class="list-group list-group-item" style="background-color: rgb(243, 236, 236); margin-top: 50px;">
         <li class="list-group-item"style="text-align: center; color: cadetblue;" >TOP 10</li>
         {%for i in allmusic%}
-        <li class="list-group-item" style="text-align: center;"><a href="/songpage" style="color: rgb(24, 24, 24);">{{i.song_name}}</a></li>
+        <li class="list-group-item" style="text-align: center;"><a href="/songpage/{{i.id}}" style="color: rgb(24, 24, 24);">{{i.song_name}}</a></li>
         {%endfor%}
     </ul>
 

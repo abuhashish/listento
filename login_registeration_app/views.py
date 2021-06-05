@@ -68,32 +68,44 @@ def adduser(request):
         }
         return redirect('/home')
 def artists(request):
-    return render(request,'artistspage.html')
-def userprofile(req):
-    context={
-        'x':User.objects.get(id=req.session['user']['id'])
+    all_artists = User.objects.filter(role=1)
+    contixt = {
+        'all_artists':all_artists
     }
-    
-    return render(req,'userprofile.html',context)
-def artistprofile(req):
+    return render(request,'artistspage.html',contixt)
+def userprofile(req):
+    user = User.objects.get(id=req.session['user']['id'])
+    allmusic = Music.objects.all
+    context={
+        'x': user,
+        'allmusic':allmusic
+    }
+    if user.role == Role.objects.get(id=2):
+        return render(req,'userprofile.html',context)
+    return render(req,'artistpage.html',context)
+def artistprofile(req,id):
+    user = User.objects.get(id=id)
+    allmusic = Music.objects.all
     allmusic = Music.objects.all
     context = {
+        'x': user,
         'allmusic':allmusic
     }
     return render(req,'artistpage.html',context)
-def addmusic(req):
-    user = User.objects.get(id = req.session['user']['id'])
+def addmusic(req,id):
+    user = User.objects.get(id = id)
     song_title = req.POST['songtitle']
     song_writer  = req.POST['songwriter']
     song_composer = req.POST['songcomposer']
     mp3file = req.FILES['songmp3']
     duration = 3
     Music.objects.create(song_name = song_title , writer = song_writer ,composer = song_composer , duration = duration , music = mp3file , uploaded_by = user  )
-    return redirect('/artistprofile')
-def songpage(req):
-    allmusic = Music.objects.all
+    return redirect('/artistprofile/'+str(id))
+def songpage(req,id):
+    allmusic = Music.objects.filter(id=id)
     context = {
-        'allmusic':allmusic
+        'allmusic':allmusic,
+
         }
     return render(req,'songpage.html',context)
 def logout(req):
@@ -102,4 +114,13 @@ def logout(req):
 def delete(req,id):
     song = Music.objects.get(id=id)
     song.delete()
-    return redirect('/artistprofile')
+    return redirect('/artistprofile/'+str(req.session['user']['id']))
+def requesttobeartist(req):
+    user = User.objects.get(id = req.session['user']['id'])
+    if user.role == Role.objects.get(id=2):
+        user.role = Role.objects.get(id=1)
+        user.save()
+        return redirect('/userprofile')
+    user.role = Role.objects.get(id=2)
+    user.save()
+    return redirect('/userprofile')

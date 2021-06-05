@@ -69,9 +69,8 @@
     }
 </style>
 <div class="card">
-
-    <img src="static/imgs/Melhem-Barakat.jpeg" alt="Melhem-Barakat photo" style="border-radius: 50%; width: 100px; height: 100px;">
-    <h1><a href="artistpage"> Melhem Barakat </a></h1>
+    <img src="{{user.image.url}}" alt="Melhem-Barakat photo" style="border-radius: 50%; width: 100px; height: 100px;">
+    <h1>Melhem Barakat </h1>
     <p>Production Date: 12 Years Ago</p>
     {%for i in allmusic%}
     <h1>{{i.song_name}}</h1>   
