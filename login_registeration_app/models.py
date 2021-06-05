@@ -1,7 +1,10 @@
 from django.contrib.messages import default_app_config
 from django.db import models
+from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 import re
+
+from django.db.models.fields import BooleanField
 class UserManger(models.Manager):
     def basic_validator(self, postData):
         errors = {}
@@ -44,9 +47,15 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     gender=models.ForeignKey(Gender,related_name="users",on_delete=models.CASCADE)
-    followers=models.ManyToManyField('self',related_name="following")
     role=models.ForeignKey(Role,related_name="users",on_delete=models.CASCADE)
     objects = UserManger() 
-class Request(models.Model):
-    request=models.BooleanField(default=False)
+
+class LOL(models.Model):
+    bool=models.BooleanField(default=False)
     user=models.ForeignKey(User,related_name="requests",on_delete=models.CASCADE)
+    
+class Follower(models.Model):
+    following=models.ForeignKey(User,related_name="userfollowers",on_delete=models.CASCADE)
+    followers=models.ForeignKey(User,related_name="userfollowings",on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

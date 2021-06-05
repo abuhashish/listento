@@ -1,3 +1,4 @@
+from django.http import request
 from music_app.models import Music
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
@@ -126,7 +127,15 @@ def requesttobeartist(req):
     return redirect('/userprofile')
 
 def admin(req):
-    return render(req,"adminlogin.html")
+    if 'user' in req.session:
+        if 'role' in req.session['user']:
+            context= {
+                            'user' : User.objects.get(id=req.session['user']['id']),
+                            
+                        }
+            return render(req,'admin.html',context)
+    else:
+        return render(req,"adminlogin.html")
 def adminhandle(req):
     if req.method == "GET":
         return redirect('/admin')
@@ -141,6 +150,7 @@ def adminhandle(req):
                         'fname':logged_user.first_name,
                         'lname':logged_user.last_name,
                         'id':logged_user.id,
+                        'role':logged_user.role.role,
                         
                     }
                     context= {
@@ -160,7 +170,9 @@ def adminprofile(req):
 def artistrequest(req):
     user=User.objects.get(id=req.session['user']['id'])
     if user.role.role == "admin":
-        all=Request.objects.all()
+        all=LOL.objects.all()
         context={
-            'all':all
+            'all':all,
+            'user':user
         }
+    return render(req,"artistrequest.html",context)
