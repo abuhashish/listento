@@ -124,3 +124,43 @@ def requesttobeartist(req):
     user.role = Role.objects.get(id=2)
     user.save()
     return redirect('/userprofile')
+
+def admin(req):
+    return render(req,"adminlogin.html")
+def adminhandle(req):
+    if req.method == "GET":
+        return redirect('/admin')
+    if req.method == "POST":
+        user = User.objects.filter(username = req.POST['user'])
+        psswd = req.POST['pass'] 
+        if user:
+            logged_user=user[0]
+            if logged_user.role.role=="admin":
+                if bcrypt.checkpw(psswd.encode(), logged_user.password.encode()):
+                    req.session['user']={
+                        'fname':logged_user.first_name,
+                        'lname':logged_user.last_name,
+                        'id':logged_user.id,
+                        
+                    }
+                    context= {
+                        'user' : User.objects.get(id=req.session['user']['id']),
+                        
+                    }
+                return render(req,'admin.html',context)
+            return redirect('/admin')
+    else:
+        return('/home')
+def adminprofile(req):
+    user=User.objects.get(id=req.session['user']['id'])
+    context={
+        'user':user
+    }
+    return render(req,"adminprofile.html")
+def artistrequest(req):
+    user=User.objects.get(id=req.session['user']['id'])
+    if user.role.role == "admin":
+        all=Request.objects.all()
+        context={
+            'all':all
+        }

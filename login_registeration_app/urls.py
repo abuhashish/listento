@@ -16,7 +16,11 @@ urlpatterns = [
         path('logout',views.logout),
         path('addmusic/<int:id>', views.addmusic),
         path('delete/<int:id>',views.delete),
-        path('requesttobeartist',views.requesttobeartist)
+        path('requesttobeartist',views.requesttobeartist),
+        path('admin',views.admin),
+        path('adminProfile',views.adminprofile),
+        path('adminhandle',views.adminhandle),
+        path('artistrequest',views.artistrequest),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,

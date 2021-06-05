@@ -23,7 +23,7 @@ from django.contrib import admin
 urlpatterns = [
     path('', include('music_app.urls')),
     path('',include('login_registeration_app.urls')),
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
 
 ]
 if settings.DEBUG:

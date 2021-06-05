@@ -1,3 +1,4 @@
+from django.contrib.messages import default_app_config
 from django.db import models
 from django.db.models.deletion import CASCADE
 import re
@@ -30,6 +31,8 @@ class Role(models.Model):
 
 class Gender(models.Model):
     gender=models.CharField(max_length=6)
+
+
 class User(models.Model):
     username=models.CharField(max_length=45)
     first_name=models.CharField(max_length=45)
@@ -44,3 +47,6 @@ class User(models.Model):
     followers=models.ManyToManyField('self',related_name="following")
     role=models.ForeignKey(Role,related_name="users",on_delete=models.CASCADE)
     objects = UserManger() 
+class Request(models.Model):
+    request=models.BooleanField(default=False)
+    user=models.ForeignKey(User,related_name="requests",on_delete=models.CASCADE)
