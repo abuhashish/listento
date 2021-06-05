@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from login_registeration_app.models import *
 from django.contrib import messages
 from django.db.models import Count
+from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 import bcrypt
 # Create your views here.
 def root(request):
@@ -70,11 +71,23 @@ def adduser(request):
         }
         return redirect('/home')
 def artists(request):
-    all_artists = User.objects.filter(role=1)
-    contixt = {
-        'all_artists':all_artists
+    users= User.objects.filter(role = Role.objects.get(id = 1))
+    page = request.GET.get('page', 1)
+    paginator = Paginator (users, 5)
+
+    try:
+        artists = paginator.page(page)
+    except PageNotAnInteger:
+        artists = paginator.page(1)
+    except EmptyPage:
+        artists= paginator.page(paginator.num_pages)
+    context = {
+        'all_artists':users,
+        'artists' : artists
+    
     }
-    return render(request,'artistspage.html',contixt)
+    return render(request,'artistspage.html', context)
+
 def userprofile(req):
     user = User.objects.get(id=req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
@@ -93,11 +106,18 @@ def userprofile(req):
     return render(req,'artistpage.html',context)
 def artistprofile(req,id):
     user = User.objects.get(id=id)
+    me = User.objects.get(id = req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
-    
+    g=0
+    for i in user.userfollowers.all():
+        if me.id == i.followinguser.id :
+            print(i.followinguser.id)
+            g=g+1
     context = {
         'x': user,
-        'allmusic':allmusic
+        'allmusic':allmusic,
+        'me':me,
+        'g':g
     }
     return render(req,'artistpage.html',context)
 def addmusic(req,id):
@@ -249,3 +269,15 @@ def update(request,id):
     user.role=role
     user.save()
     return redirect('/adminallusers')
+def follow(request,id):
+    user=User.objects.get(id=id)
+    folower=User.objects.get(id=request.session['user']['id'])
+    Follower.objects.create(followeduser=user,followinguser=folower)
+    return redirect('/artistprofile/'+str(id))
+
+def unfollow(request,id):
+    user=User.objects.get(id=id)
+    folower=User.objects.get(id=request.session['user']['id'])
+    x=Follower.objects.get(followeduser=user,followinguser=folower)
+    x.delete()
+    return redirect('/artistprofile/'+str(id))

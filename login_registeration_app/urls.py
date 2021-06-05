@@ -17,7 +17,7 @@ urlpatterns = [
         path('addmusic/<int:id>', views.addmusic),
         path('delete/<int:id>',views.delete),
         path('requesttobeartist',views.requesttobeartist),
-        path('admin',views.admin),
+        path('admin/',views.admin),
         path('adminProfile',views.adminprofile),
         path('adminhandle',views.adminhandle),
         path('artistrequest',views.artistrequest),
@@ -27,7 +27,9 @@ urlpatterns = [
         path('allmusic',views.allmusic),
         path('deleteuser/<int:id>',views.deleteuser),
         path('deletemusic/<int:id>',views.deletemusic),
-        path('update/<int:id>',views.update)
+        path('update/<int:id>',views.update),
+        path('follow/<int:id>',views.follow),
+        path('unfollow/<int:id>',views.unfollow),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,

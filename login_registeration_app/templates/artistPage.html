@@ -440,6 +440,7 @@ footer p a:hover {
     	            </div>
                 </div>
                 <div class="description text-center">
+                   
                     <p>An artist of considerable range, Chet Faker — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music, giving it a warm, intimate feel with a solid groove structure. </p>
                 </div>
 				<div class="row">
@@ -462,18 +463,29 @@ footer p a:hover {
                             </li>
                             {%endif%}
                         </li>
+                        
                             {%if request.session.user.id != x.id %}
+                            {%if g != 0 %}
                             <li class="nav-item">
-                                <a class="nav-link" href="#" role="tab" data-toggle="tab">
-                                <i class="material-icons">favorite</i>
+                                <a class="nav-link" href="/unfollow/{{x.id}}" role="tab" >
+                                    <i class="material-icons">favorite_border</i>
+                                    UnFollow
+                                </a>
+                            </li>
+                            {%else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/follow/{{x.id}}" role="tab" >
+                                    <i class="material-icons">favorite</i>
                                     Follow
                                 </a>
                             </li>
                             {%endif%}
-                          </ul>
+                            {%endif%}
+                        </ul>
                         </div>
     	    	</div>
             </div>
+            
         
           <div class="tab-content tab-space">
             <div class="tab-pane active text-center gallery" id="studio">
