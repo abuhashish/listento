@@ -461,12 +461,15 @@ footer p a:hover {
                                 </a>
                             </li>
                             {%endif%}
+                        </li>
+                            {%if request.session.user.id != x.id %}
                             <li class="nav-item">
                                 <a class="nav-link" href="#" role="tab" data-toggle="tab">
                                 <i class="material-icons">favorite</i>
                                     Follow
                                 </a>
                             </li>
+                            {%endif%}
                           </ul>
                         </div>
     	    	</div>
@@ -479,7 +482,11 @@ footer p a:hover {
                         <ul class="list-group list-group-flush" name="top10">
                             <li class="list-group-item" >Artist Release</li>
                             {%for i in allmusic%}
-                            <li class="list-group-item"><a href="/songpage/{{i.id}}">{{i.song_name}}</a> <form action="/delete/{{i.id}}" method="POST">{% csrf_token %}<input type="submit" value="Delete" class="btn btn-danger"> </form> </li>
+                            <li class="list-group-item"><a href="/songpage/{{i.id}}">{{i.song_name}}</a> 
+                                {% if request.session.user.id == x.id %}
+                                <form action="/delete/{{i.id}}" method="POST">{% csrf_token %}<input type="submit" value="Delete" class="btn btn-danger"> </form>
+                                {% endif %}
+                             </li>
                             
                             {%endfor%}
                         </ul>
