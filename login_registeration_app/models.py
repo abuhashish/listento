@@ -55,7 +55,7 @@ class LOL(models.Model):
     user=models.ForeignKey(User,related_name="requests",on_delete=models.CASCADE)
     
 class Follower(models.Model):
-    following=models.ForeignKey(User,related_name="userfollowers",on_delete=models.CASCADE)
-    followers=models.ForeignKey(User,related_name="userfollowings",on_delete=models.CASCADE)
+    followeduser=models.ForeignKey(User,related_name="userfollowers",on_delete=models.CASCADE)
+    followinguser=models.ForeignKey(User,related_name="userfollowings",on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
