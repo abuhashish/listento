@@ -6,6 +6,7 @@ from login_registeration_app.models import *
 from django.contrib import messages
 from django.db.models import Count
 import bcrypt
+from .models import *
 # Create your views here.
 def root(request):
     return redirect('/login')
@@ -252,3 +253,15 @@ def update(request,id):
     user.role=role
     user.save()
     return redirect('/adminallusers')
+def follow(request,id):
+    user=User.objects.get(id=id)
+    folower=User.objects.get(id=request.session['user']['id'])
+    Follower.objects.create(followeduser=user,followinguser=folower)
+    return redirect('/artistprofile/'+str(id))
+
+def unfollow(request,id):
+    user=User.objects.get(id=id)
+    folower=User.objects.get(id=request.session['user']['id'])
+    x=Follower.objects.get(followeduser=user,followinguser=folower)
+    x.delete()
+    return redirect('/artistprofile/'+str(id))
