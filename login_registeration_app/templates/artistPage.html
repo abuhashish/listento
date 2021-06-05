@@ -452,12 +452,15 @@ footer p a:hover {
                                 Artist Release
                                 </a>
                             </li>
+                            {%if request.session.user.id == x.id and request.session.user.role == "artis" %}
+
                             <li class="nav-item">
                                 <a class="nav-link" href="#works" role="tab" data-toggle="tab">
                                 <i class="material-icons">palette</i>
                                     Upload Song
                                 </a>
                             </li>
+                            {%endif%}
                             <li class="nav-item">
                                 <a class="nav-link" href="#" role="tab" data-toggle="tab">
                                 <i class="material-icons">favorite</i>
@@ -489,13 +492,13 @@ footer p a:hover {
                         <form action="/addmusic/{{x.id}}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <label for="songtitle">Song Title</label>
-                            <input type="text" name="songtitle" class="form-control"><br>
+                            <input  required type="text" name="songtitle" class="form-control"><br>
                             <label for="songwriter">Song Writer</label>
-                            <input type="text" name="songwriter" class="form-control"><br>
+                            <input  required type="text" name="songwriter" class="form-control"><br>
                             <label for="songcomposer">Song Composer</label>
-                            <input type="text" name="songcomposer" class="form-control"><br>
+                            <input  required type="text" name="songcomposer" class="form-control"><br>
                             <label for="songmp3">Song MP3</label>
-                            <input type="file" name="songmp3" class="form-control"><br>
+                            <input required type="file" name="songmp3" class="form-control"><br>
                             <input type="submit" value="upload" class="btn btn-dark" >
                         </form>
                         </div>

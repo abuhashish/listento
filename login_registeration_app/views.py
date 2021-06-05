@@ -23,6 +23,7 @@ def logins(req):
                 'fname':logged_user.first_name,
                 'lname':logged_user.last_name,
                 'id':logged_user.id,
+                'role':logged_user.role.role,
                 
             }
             context= {
@@ -76,7 +77,7 @@ def artists(request):
     return render(request,'artistspage.html',contixt)
 def userprofile(req):
     user = User.objects.get(id=req.session['user']['id'])
-    allmusic = Music.objects.all
+    allmusic = Music.objects.filter(uploaded_by=user)
     queryset=LOL.objects.filter(user=user)
     if  queryset.exists():
         typex=1
@@ -92,8 +93,8 @@ def userprofile(req):
     return render(req,'artistpage.html',context)
 def artistprofile(req,id):
     user = User.objects.get(id=id)
-    allmusic = Music.objects.all
-    allmusic = Music.objects.all
+    allmusic = Music.objects.filter(uploaded_by=user)
+    
     context = {
         'x': user,
         'allmusic':allmusic
@@ -131,11 +132,14 @@ def requesttobeartist(req):
 def admin(req):
     if 'user' in req.session:
         if 'role' in req.session['user']:
-            context= {
-                            'user' : User.objects.get(id=req.session['user']['id']),
-                            
-                        }
-            return render(req,'admin.html',context)
+            if req.session['user']['role']=="admin":
+                context= {
+                                'user' : User.objects.get(id=req.session['user']['id']),
+                                
+                            }
+                return render(req,'admin.html',context)
+            else:
+                return redirect('/home')
     else:
         return render(req,"adminlogin.html")
 def adminhandle(req):
@@ -164,12 +168,16 @@ def adminhandle(req):
     else:
         return('/home')
 def adminprofile(req):
+    if req.session['user']['role'] != 'admin':
+        return redirect('/home')
     user=User.objects.get(id=req.session['user']['id'])
     context={
         'user':user
     }
-    return render(req,"adminprofile.html")
+    return render(req,"adminprofile.html",context)
 def artistrequest(req):
+    if req.session['user']['role'] != 'admin':
+        return redirect('/home')
     user=User.objects.get(id=req.session['user']['id'])
     if user.role.role == "admin":
         all=LOL.objects.all()
@@ -179,6 +187,8 @@ def artistrequest(req):
         }
     return render(req,"artistrequest.html",context)
 def acceptartist(req,id):
+    if req.session['user']['role'] != 'admin':
+        return redirect('/home')
     user=User.objects.get(id=id)
     user.role=Role.objects.get(id=1)
     user.save()
@@ -187,7 +197,55 @@ def acceptartist(req,id):
     return redirect('/admin')
 
 def declineartist(req,id):
+    if req.session['user']['role'] != 'admin':
+        return redirect('/home')
     user=User.objects.get(id=id)
     lol=LOL.objects.get(user=user)
     lol.delete()
     return redirect('/artistrequest')
+
+def allusers(req):
+    if req.session['user']['role'] != 'admin':
+        return redirect('/home')
+    user=User.objects.get(id=req.session['user']['id'])
+    all=User.objects.all()
+    allroles=Role.objects.all()
+    context={
+        'all':all,
+        'user':user,
+        'allroles':allroles
+    }
+    return render(req,"allusers.html",context)
+def allmusic(req):
+    if req.session['user']['role'] != 'admin':
+        return redirect('/home')
+    user=User.objects.get(id=req.session['user']['id'])
+    all=Music.objects.all()
+    context={
+        'user':user,
+        'all':all,
+    }
+    return render(req,"allmusic.html",context)
+def deleteuser(req,id):
+    if req.session['user']['role'] != 'admin':
+        return redirect('/home')
+    user=User.objects.get(id=id)
+    user.delete()
+    return redirect('/adminallusers')
+def deletemusic(req,id):
+    if req.session['user']['role'] != 'admin':
+        return redirect('/home')
+    music=Music.objects.get(id=id)
+    music.delete()
+    return redirect('/allmusic')
+def update(request,id):
+    if request.session['user']['role'] != 'admin':
+        return redirect('/home')
+    role=Role.objects.get(id=request.POST['role'])
+    user=User.objects.get(id=id)
+    user.first_name=request.POST['fname']
+    user.last_name=request.POST['lname']
+    user.username=request.POST['username']
+    user.role=role
+    user.save()
+    return redirect('/adminallusers')
