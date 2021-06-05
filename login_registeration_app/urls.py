@@ -21,6 +21,8 @@ urlpatterns = [
         path('adminProfile',views.adminprofile),
         path('adminhandle',views.adminhandle),
         path('artistrequest',views.artistrequest),
+        path('acceptartist/<int:id>',views.acceptartist),
+        path('declineartist/<int:id>',views.declineartist),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,

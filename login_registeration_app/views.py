@@ -77,9 +77,15 @@ def artists(request):
 def userprofile(req):
     user = User.objects.get(id=req.session['user']['id'])
     allmusic = Music.objects.all
+    queryset=LOL.objects.filter(user=user)
+    if  queryset.exists():
+        typex=1
+    else:
+        typex=2
     context={
         'x': user,
-        'allmusic':allmusic
+        'allmusic':allmusic,
+        'type':typex
     }
     if user.role == Role.objects.get(id=2):
         return render(req,'userprofile.html',context)
@@ -118,13 +124,9 @@ def delete(req,id):
     return redirect('/artistprofile/'+str(req.session['user']['id']))
 def requesttobeartist(req):
     user = User.objects.get(id = req.session['user']['id'])
-    if user.role == Role.objects.get(id=2):
-        user.role = Role.objects.get(id=1)
-        user.save()
-        return redirect('/userprofile')
-    user.role = Role.objects.get(id=2)
-    user.save()
+    LOL.objects.create(user=user,bool=True)
     return redirect('/userprofile')
+    
 
 def admin(req):
     if 'user' in req.session:
@@ -176,3 +178,16 @@ def artistrequest(req):
             'user':user
         }
     return render(req,"artistrequest.html",context)
+def acceptartist(req,id):
+    user=User.objects.get(id=id)
+    user.role=Role.objects.get(id=1)
+    user.save()
+    lol=LOL.objects.get(user=user)
+    lol.delete()
+    return redirect('/admin')
+
+def declineartist(req,id):
+    user=User.objects.get(id=id)
+    lol=LOL.objects.get(user=user)
+    lol.delete()
+    return redirect('/artistrequest')

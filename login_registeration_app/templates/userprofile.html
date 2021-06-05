@@ -433,7 +433,12 @@ footer p a:hover {
 	                        <div class="name">
 	                            <h3 class="title">{{x.first_name}} {{x.last_name}}</h3>
 								<h6>{{x.role.role}}</h6>
+                                {% if type == 2 %}
+                                
                                 <a href="/requesttobeartist">Request to be Artist</a>
+                                {% elif type == 1 %}
+                                <p>you already applied</p>
+                                {%endif%}
 	                        </div>
 	                    </div>
     	            </div>

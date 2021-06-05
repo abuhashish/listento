@@ -18,7 +18,8 @@
         <td>{{i.user.first_name}}</td>
         <td>{{i.user.last_name}}</td>
         <td>{{i.user.username}}</td>
-        <td>handle</td>
+        <td><a href="acceptartist/{{i.user.id}}" type="button" class="btn btn-primary">Accept</a> <a  href="declineartist/{{i.user.id}}"type="button" class="btn btn-danger">decline</a></td>
+        
       </tr>
     {%endfor%}
     </tbody>
