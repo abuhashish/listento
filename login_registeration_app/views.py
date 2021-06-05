@@ -1,5 +1,5 @@
 from django.http import request
-from music_app.models import Music
+from music_app.models import Music, Rate
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from login_registeration_app.models import *
@@ -44,7 +44,7 @@ def home(req):
     return redirect('/')
 def adduser(request):
     if 'user' in request.session :
-        return redirect('/register')
+        return redirect('/home')
     errors=User.objects.basic_validator(request.POST)
     if len(errors)>0:
         for key,value in errors.items():
@@ -68,6 +68,7 @@ def adduser(request):
             'fname':user.first_name,
             'lname':user.last_name,
         }
+        print(user.first_name)
         return redirect('/home')
 def artists(request):
     all_artists = User.objects.filter(role=1)
@@ -111,8 +112,10 @@ def addmusic(req,id):
     return redirect('/artistprofile/'+str(id))
 def songpage(req,id):
     allmusic = Music.objects.filter(id=id)
+    
     context = {
         'allmusic':allmusic,
+       
 
         }
     return render(req,'songpage.html',context)
