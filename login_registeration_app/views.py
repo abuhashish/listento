@@ -6,7 +6,7 @@ from login_registeration_app.models import *
 from django.contrib import messages
 from django.db.models import Count
 import bcrypt
-from .models import *
+from django.http import JsonResponse
 # Create your views here.
 def root(request):
     return redirect('/login')
@@ -111,13 +111,33 @@ def addmusic(req,id):
     duration = 3
     Music.objects.create(song_name = song_title , writer = song_writer ,composer = song_composer , duration = duration , music = mp3file , uploaded_by = user  )
     return redirect('/artistprofile/'+str(id))
+sum1=0
+sum2=0
 def songpage(req,id):
-    allmusic = Music.objects.filter(id=id)
-    
+    global sum1,sum2
+    z = Music.objects.get(id=id)
+    user=User.objects.get(id=req.session['user']['id'])
+    for i in z.rates.all():
+        sum1=sum1+i.score
+        sum2=sum2+1
+    rate=int(sum1/sum2)
+    print(sum1)
+    print(rate)
+    if rate == 1:
+        rate="first"
+    elif rate == 2:
+        rate="second"
+    elif rate == 3:
+        rate="third"
+    elif rate == 4 :
+        rate="fourth"
+    elif rate== 5:
+        rate = "fifth"
     context = {
-        'allmusic':allmusic,
-       
-
+        'filter':user.rates.filter(music=z),
+        'i':z,
+        'rate':rate,
+        'user':user
         }
     return render(req,'songpage.html',context)
 def logout(req):
@@ -265,3 +285,17 @@ def unfollow(request,id):
     x=Follower.objects.get(followeduser=user,followinguser=folower)
     x.delete()
     return redirect('/artistprofile/'+str(id))
+def rate_image(request,id):
+    user=User.objects.get(id=request.session['user']['id'])
+    music=Music.objects.get(id=id)
+    if 'first' in request.POST:
+        Rate.objects.create(music=music,user=user,score=1)
+    if 'second' in request.POST:
+        Rate.objects.create(music=music,user=user,score=2)
+    if 'third' in request.POST:
+        Rate.objects.create(music=music,user=user,score=3)
+    if 'fourth' in request.POST:
+        Rate.objects.create(music=music,user=user,score=4)
+    if 'fifth' in request.POST:
+        Rate.objects.create(music=music,user=user,score=5)
+    return redirect('/songpage/'+str(id))
