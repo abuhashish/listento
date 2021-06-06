@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.db.models import Count
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 import bcrypt
-from .models import *
+from django.http import JsonResponse
 # Create your views here.
 def root(request):
     return redirect('/login')
@@ -16,6 +16,7 @@ def login (request):
         return render(request,"login.html")
     return redirect('/home')
 def logins(req):
+    req.session.clear()
     user = User.objects.filter(username = req.POST['username'])
     psswd = req.POST['passwd'] 
     if user:
@@ -32,8 +33,13 @@ def logins(req):
                 'userimg' : User.objects.get(id=req.session['user']['id']),
                 'allimgs' : User.objects.all()
             }
-        return render(req,'home.html',context)
-    return redirect('/')
+            return render(req,'home.html',context)
+        else:
+            req.session['wrngpass']="password is wrong"
+            return redirect('/')
+    else:
+        req.session['wrngemail']="email is wrong"
+        return redirect('/')
 def register(request):
     return render(request,'registeration.html')
 def home(req):
@@ -131,13 +137,35 @@ def addmusic(req,id):
     duration = 3
     Music.objects.create(song_name = song_title , writer = song_writer ,composer = song_composer , duration = duration , music = mp3file , uploaded_by = user  )
     return redirect('/artistprofile/'+str(id))
+sum1=0
+sum2=0
 def songpage(req,id):
-    allmusic = Music.objects.filter(id=id)
-    
+    global sum1,sum2
+    z = Music.objects.get(id=id)
+    user=User.objects.get(id=req.session['user']['id'])
+    Ratingusers=z.rates.count()
+    for i in z.rates.all():
+        sum1=sum1+i.score
+        sum2=sum2+1
+    rate=int(sum1/sum2)
+    num=rate
+    if rate == 1:
+        rate="first"
+    elif rate == 2:
+        rate="second"
+    elif rate == 3:
+        rate="third"
+    elif rate == 4 :
+        rate="fourth"
+    elif rate== 5:
+        rate = "fifth"
     context = {
-        'allmusic':allmusic,
-       
-
+        'filter':user.rates.filter(music=z),
+        'i':z,
+        'rate':rate,
+        'user':user,
+        'num':num,
+        'users':Ratingusers
         }
     return render(req,'songpage.html',context)
 def logout(req):
