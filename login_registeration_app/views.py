@@ -16,6 +16,7 @@ def login (request):
         return render(request,"login.html")
     return redirect('/home')
 def logins(req):
+    req.session.clear()
     user = User.objects.filter(username = req.POST['username'])
     psswd = req.POST['passwd'] 
     if user:
@@ -32,8 +33,13 @@ def logins(req):
                 'userimg' : User.objects.get(id=req.session['user']['id']),
                 'allimgs' : User.objects.all()
             }
-        return render(req,'home.html',context)
-    return redirect('/')
+            return render(req,'home.html',context)
+        else:
+            req.session['wrngpass']="password is wrong"
+            return redirect('/')
+    else:
+        req.session['wrngemail']="email is wrong"
+        return redirect('/')
 def register(request):
     return render(request,'registeration.html')
 def home(req):
