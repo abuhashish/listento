@@ -30,13 +30,9 @@ urlpatterns = [
         path('update/<int:id>',views.update),
         path('follow/<int:id>',views.follow),
         path('unfollow/<int:id>',views.unfollow),
-<<<<<<< HEAD
-        path('search',views.search)
-=======
         path('release/',views.release),
         path('top10',views.top10),
         path('rate/<int:id>', views.rate_image),
->>>>>>> 8d1f07d630fa4a0dbaa698dc5f9e3c3c35e2a0ff
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,

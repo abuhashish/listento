@@ -297,8 +297,6 @@ def unfollow(request,id):
     x=Follower.objects.get(followeduser=user,followinguser=folower)
     x.delete()
     return redirect('/artistprofile/'+str(id))
-<<<<<<< HEAD
-=======
     
 def rate_image(request,id):
     user=User.objects.get(id=request.session['user']['id'])
@@ -428,7 +426,6 @@ def top10(request):
 
 
 
->>>>>>> 8d1f07d630fa4a0dbaa698dc5f9e3c3c35e2a0ff
 
 
 
@@ -440,14 +437,4 @@ def top10(request):
 
 
 
-<<<<<<< HEAD
-def search(request):
-    if request.method == "POST":
-        searched = request.POST['searched']
-        value_to_search = Music.objects.filter(song_name = searched)
-        return render(request,'search.html',{'searched':searched, 'value_to_search':value_to_search})
-    else:
-        return render(request,'search.html',{})
-=======
->>>>>>> 8d1f07d630fa4a0dbaa698dc5f9e3c3c35e2a0ff
 
