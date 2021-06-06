@@ -75,7 +75,7 @@ def adduser(request):
 def artists(request):
     users= User.objects.filter(role = Role.objects.get(id = 1))
     page = request.GET.get('page', 1)
-    paginator = Paginator (users, 5)
+    paginator = Paginator (users, 4)
 
     try:
         artists = paginator.page(page)
