@@ -38,7 +38,7 @@ def register(request):
     return render(request,'registeration.html')
 def home(req):
     if 'user' in req.session:
-        allmusic = Music.objects.all
+        allmusic = Music.objects.all()
         context = {
         'allmusic':allmusic
         }
@@ -285,3 +285,128 @@ def unfollow(request,id):
     x=Follower.objects.get(followeduser=user,followinguser=folower)
     x.delete()
     return redirect('/artistprofile/'+str(id))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def release(request):
+    context={
+        'allmusic':Music.objects.order_by('-created_at').all()[:10],
+        'msg':"Newest Releases"
+    }
+    return render (request,"release.html",context)
+
+def top10(request):
+    context={
+        'allmusic':Music.objects.all()[:10],
+        'msg':"Top 10 Music"
+    }
+    return render (request,"release.html",context)
