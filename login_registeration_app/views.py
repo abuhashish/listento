@@ -44,7 +44,7 @@ def register(request):
     return render(request,'registeration.html')
 def home(req):
     if 'user' in req.session:
-        allmusic = Music.objects.all()
+        allmusic = Music.objects.all
         context = {
         'allmusic':allmusic
         }
@@ -323,128 +323,17 @@ def unfollow(request,id):
     x=Follower.objects.get(followeduser=user,followinguser=folower)
     x.delete()
     return redirect('/artistprofile/'+str(id))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def release(request):
-    context={
-        'allmusic':Music.objects.order_by('-created_at').all()[:10],
-        'msg':"Newest Releases"
-    }
-    return render (request,"release.html",context)
-
-def top10(request):
-    context={
-        'allmusic':Music.objects.all()[:10],
-        'msg':"Top 10 Music"
-    }
-    return render (request,"release.html",context)
+def rate_image(request,id):
+    user=User.objects.get(id=request.session['user']['id'])
+    music=Music.objects.get(id=id)
+    if 'first' in request.POST:
+        Rate.objects.create(music=music,user=user,score=1)
+    if 'second' in request.POST:
+        Rate.objects.create(music=music,user=user,score=2)
+    if 'third' in request.POST:
+        Rate.objects.create(music=music,user=user,score=3)
+    if 'fourth' in request.POST:
+        Rate.objects.create(music=music,user=user,score=4)
+    if 'fifth' in request.POST:
+        Rate.objects.create(music=music,user=user,score=5)
+    return redirect('/songpage/'+str(id))
