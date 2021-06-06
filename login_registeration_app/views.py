@@ -76,7 +76,6 @@ def adduser(request):
             'fname':user.first_name,
             'lname':user.last_name,
         }
-        print(user.first_name)
         return redirect('/home')
 def artists(request):
     users= User.objects.filter(role = Role.objects.get(id = 1))
@@ -117,19 +116,23 @@ def userprofile(req):
         return render(req,'userprofile.html',context)
     return render(req,'artistpage.html',context)
 def artistprofile(req,id):
+    followed_user=User.objects.get(id=id)
+    followers = Follower.objects.filter(followeduser=followed_user).count()
+   
     user = User.objects.get(id=id)
     me = User.objects.get(id = req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
     g=0
     for i in user.userfollowers.all():
         if me.id == i.followinguser.id :
-            print(i.followinguser.id)
+           
             g=g+1
     context = {
         'x': user,
         'allmusic':allmusic,
         'me':me,
         'g':g,
+        'number_of_followers': followers 
         
     }
     return render(req,'artistpage.html',context)
@@ -337,3 +340,129 @@ def rate_image(request,id):
     if 'fifth' in request.POST:
         Rate.objects.create(music=music,user=user,score=5)
     return redirect('/songpage/'+str(id))
+def release(request):
+    context={
+        'allmusic':Music.objects.order_by('-created_at').all()[:10],
+        'msg':"Newest Releases"
+    }
+    return render (request,"release.html",context)
+
+def top10(request):
+    context={
+        'allmusic':Music.objects.all()[:10],
+        'msg':"Top 10 Music"
+    }
+    return render (request,"release.html",context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
