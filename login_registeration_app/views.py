@@ -157,24 +157,30 @@ def requesttobeartist(req):
     
 
 def admin(req):
+    userRole=Role.objects.get(id=2)
+    artistRole=Role.objects.get(id=1)
     if 'user' in req.session:
         if 'role' in req.session['user']:
             if req.session['user']['role']=="admin":
                 context= {
                                 'user' : User.objects.get(id=req.session['user']['id']),
-                                
+                                'music_count':Music.objects.all().count(),
+                                'user_count':User.objects.filter(role=userRole).count(),
+                                'artist_count':User.objects.filter(role=artistRole).count()
                             }
-                return render(req,'admin.html',context)
+                return render(req,'welcomeadmin.html',context)
             else:
                 return redirect('/home')
     else:
         return render(req,"adminlogin.html")
 def adminhandle(req):
+    userRole=Role.objects.get(id=2)
+    artistRole=Role.objects.get(id=1)
     if req.method == "GET":
         return redirect('/admin')
     if req.method == "POST":
         user = User.objects.filter(username = req.POST['user'])
-        psswd = req.POST['pass'] 
+        psswd = req.POST['pass']
         if user:
             logged_user=user[0]
             if logged_user.role.role=="admin":
@@ -188,9 +194,12 @@ def adminhandle(req):
                     }
                     context= {
                         'user' : User.objects.get(id=req.session['user']['id']),
+                        'music_count':Music.objects.all().count(),
+                        'user_count':User.objects.filter(role=userRole).count(),
+                        'artist_count':User.objects.filter(role=artistRole).count()
                         
                     }
-                return render(req,'admin.html',context)
+                return render(req,'welcomeadmin.html',context)
             return redirect('/admin')
     else:
         return('/home')
