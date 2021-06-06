@@ -1,6 +1,6 @@
 from django.http import request
 from music_app.models import Music, Rate
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from login_registeration_app.models import *
 from django.contrib import messages
@@ -326,11 +326,25 @@ def top10(request):
     }
     return render (request,"release.html",context)
 
+def autocomplete(request, str):
+    data={}
+    x=User.objects.filter(first_name__contains=str)
+    names=[]
+    for i in x:
+        names.append(i.first_name)
+    
+    data['names'] = names
+    return JsonResponse(data)
 
 
 
-
-
+def lol(request):
+    if request.method == "POST":
+        searched = request.POST['txtSearch']
+        value_to_search = User.objects.filter(first_name = searched)
+        user=value_to_search[0]
+        id=user.id
+        return redirect('artistprofile/'+str(id))
 
 
 

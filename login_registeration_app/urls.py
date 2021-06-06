@@ -33,6 +33,8 @@ urlpatterns = [
         path('release/',views.release),
         path('top10',views.top10),
         path('rate/<int:id>', views.rate_image),
+        path('search/<str>', views.autocomplete),
+        path('anothersearch',views.lol)
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
