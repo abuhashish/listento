@@ -107,6 +107,8 @@ def userprofile(req):
         return render(req,'userprofile.html',context)
     return render(req,'artistpage.html',context)
 def artistprofile(req,id):
+    followers = Follower.objects.all()
+    number_of_followers = len(followers)
     user = User.objects.get(id=id)
     me = User.objects.get(id = req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
@@ -119,7 +121,8 @@ def artistprofile(req,id):
         'x': user,
         'allmusic':allmusic,
         'me':me,
-        'g':g
+        'g':g,
+        'number_of_followers': number_of_followers 
     }
     return render(req,'artistpage.html',context)
 def addmusic(req,id):
@@ -154,24 +157,30 @@ def requesttobeartist(req):
     
 
 def admin(req):
+    userRole=Role.objects.get(id=2)
+    artistRole=Role.objects.get(id=1)
     if 'user' in req.session:
         if 'role' in req.session['user']:
             if req.session['user']['role']=="admin":
                 context= {
                                 'user' : User.objects.get(id=req.session['user']['id']),
-                                
+                                'music_count':Music.objects.all().count(),
+                                'user_count':User.objects.filter(role=userRole).count(),
+                                'artist_count':User.objects.filter(role=artistRole).count()
                             }
-                return render(req,'admin.html',context)
+                return render(req,'welcomeadmin.html',context)
             else:
                 return redirect('/home')
     else:
         return render(req,"adminlogin.html")
 def adminhandle(req):
+    userRole=Role.objects.get(id=2)
+    artistRole=Role.objects.get(id=1)
     if req.method == "GET":
         return redirect('/admin')
     if req.method == "POST":
         user = User.objects.filter(username = req.POST['user'])
-        psswd = req.POST['pass'] 
+        psswd = req.POST['pass']
         if user:
             logged_user=user[0]
             if logged_user.role.role=="admin":
@@ -185,9 +194,12 @@ def adminhandle(req):
                     }
                     context= {
                         'user' : User.objects.get(id=req.session['user']['id']),
+                        'music_count':Music.objects.all().count(),
+                        'user_count':User.objects.filter(role=userRole).count(),
+                        'artist_count':User.objects.filter(role=artistRole).count()
                         
                     }
-                return render(req,'admin.html',context)
+                return render(req,'welcomeadmin.html',context)
             return redirect('/admin')
     else:
         return('/home')
@@ -285,6 +297,36 @@ def unfollow(request,id):
     x=Follower.objects.get(followeduser=user,followinguser=folower)
     x.delete()
     return redirect('/artistprofile/'+str(id))
+<<<<<<< HEAD
+=======
+    
+def rate_image(request,id):
+    user=User.objects.get(id=request.session['user']['id'])
+    music=Music.objects.get(id=id)
+    if 'first' in request.POST:
+        Rate.objects.create(music=music,user=user,score=1)
+    if 'second' in request.POST:
+        Rate.objects.create(music=music,user=user,score=2)
+    if 'third' in request.POST:
+        Rate.objects.create(music=music,user=user,score=3)
+    if 'fourth' in request.POST:
+        Rate.objects.create(music=music,user=user,score=4)
+    if 'fifth' in request.POST:
+        Rate.objects.create(music=music,user=user,score=5)
+    return redirect('/songpage/'+str(id))
+def release(request):
+    context={
+        'allmusic':Music.objects.order_by('-created_at').all()[:10],
+        'msg':"Newest Releases"
+    }
+    return render (request,"release.html",context)
+
+def top10(request):
+    context={
+        'allmusic':Music.objects.all()[:10],
+        'msg':"Top 10 Music"
+    }
+    return render (request,"release.html",context)
 
 
 
@@ -296,6 +338,109 @@ def unfollow(request,id):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 8d1f07d630fa4a0dbaa698dc5f9e3c3c35e2a0ff
+
+
+
+
+
+
+
+
+
+
+
+<<<<<<< HEAD
 def search(request):
     if request.method == "POST":
         searched = request.POST['searched']
@@ -303,4 +448,6 @@ def search(request):
         return render(request,'search.html',{'searched':searched, 'value_to_search':value_to_search})
     else:
         return render(request,'search.html',{})
+=======
+>>>>>>> 8d1f07d630fa4a0dbaa698dc5f9e3c3c35e2a0ff
 
