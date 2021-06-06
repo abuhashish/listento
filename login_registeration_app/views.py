@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from login_registeration_app.models import *
 from django.contrib import messages
 from django.db.models import Count
+from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 import bcrypt
 from django.http import JsonResponse
 # Create your views here.
@@ -72,11 +73,23 @@ def adduser(request):
         print(user.first_name)
         return redirect('/home')
 def artists(request):
-    all_artists = User.objects.filter(role=1)
-    contixt = {
-        'all_artists':all_artists
+    users= User.objects.filter(role = Role.objects.get(id = 1))
+    page = request.GET.get('page', 1)
+    paginator = Paginator (users, 5)
+
+    try:
+        artists = paginator.page(page)
+    except PageNotAnInteger:
+        artists = paginator.page(1)
+    except EmptyPage:
+        artists= paginator.page(paginator.num_pages)
+    context = {
+        'all_artists':users,
+        'artists' : artists
+    
     }
-    return render(request,'artistspage.html',contixt)
+    return render(request,'artistspage.html', context)
+
 def userprofile(req):
     user = User.objects.get(id=req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
@@ -95,11 +108,18 @@ def userprofile(req):
     return render(req,'artistpage.html',context)
 def artistprofile(req,id):
     user = User.objects.get(id=id)
+    me = User.objects.get(id = req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
-    
+    g=0
+    for i in user.userfollowers.all():
+        if me.id == i.followinguser.id :
+            print(i.followinguser.id)
+            g=g+1
     context = {
         'x': user,
-        'allmusic':allmusic
+        'allmusic':allmusic,
+        'me':me,
+        'g':g
     }
     return render(req,'artistpage.html',context)
 def addmusic(req,id):

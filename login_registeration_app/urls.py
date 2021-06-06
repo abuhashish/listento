@@ -17,7 +17,7 @@ urlpatterns = [
         path('addmusic/<int:id>', views.addmusic),
         path('delete/<int:id>',views.delete),
         path('requesttobeartist',views.requesttobeartist),
-        path('admin',views.admin),
+        path('admin/',views.admin),
         path('adminProfile',views.adminprofile),
         path('adminhandle',views.adminhandle),
         path('artistrequest',views.artistrequest),
