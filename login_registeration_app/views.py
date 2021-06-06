@@ -70,8 +70,7 @@ def adduser(request):
             'fname':user.first_name,
             'lname':user.last_name,
         }
-        print(user.first_name)
-        return redirect('/home')
+                return redirect('/home')
 def artists(request):
     users= User.objects.filter(role = Role.objects.get(id = 1))
     page = request.GET.get('page', 1)
@@ -107,19 +106,23 @@ def userprofile(req):
         return render(req,'userprofile.html',context)
     return render(req,'artistpage.html',context)
 def artistprofile(req,id):
+    followed_user=User.objects.get(id=id)
+    followers = Follower.objects.filter(followeduser=followed_user).count()
+   
     user = User.objects.get(id=id)
     me = User.objects.get(id = req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
     g=0
     for i in user.userfollowers.all():
         if me.id == i.followinguser.id :
-            print(i.followinguser.id)
+           
             g=g+1
     context = {
         'x': user,
         'allmusic':allmusic,
         'me':me,
-        'g':g
+        'g':g,
+        'number_of_followers': followers 
     }
     return render(req,'artistpage.html',context)
 def addmusic(req,id):
