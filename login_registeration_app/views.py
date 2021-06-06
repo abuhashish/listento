@@ -99,6 +99,8 @@ def artists(request):
 def userprofile(req):
     user = User.objects.get(id=req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
+    followings=user.userfollowings.all()
+    ratings=user.rates.all()
     queryset=LOL.objects.filter(user=user)
     if  queryset.exists():
         typex=1
@@ -107,7 +109,9 @@ def userprofile(req):
     context={
         'x': user,
         'allmusic':allmusic,
-        'type':typex
+        'type':typex,
+        'followings':followings,
+        'ratings':ratings
     }
     if user.role == Role.objects.get(id=2):
         return render(req,'userprofile.html',context)
@@ -125,7 +129,8 @@ def artistprofile(req,id):
         'x': user,
         'allmusic':allmusic,
         'me':me,
-        'g':g
+        'g':g,
+        
     }
     return render(req,'artistpage.html',context)
 def addmusic(req,id):
@@ -189,7 +194,7 @@ def admin(req):
                                 'user' : User.objects.get(id=req.session['user']['id']),
                                 
                             }
-                return render(req,'admin.html',context)
+                return render(req,'welcomeadmin.html',context)
             else:
                 return redirect('/home')
     else:
@@ -200,6 +205,8 @@ def adminhandle(req):
     if req.method == "POST":
         user = User.objects.filter(username = req.POST['user'])
         psswd = req.POST['pass'] 
+        role=Role.objects.get(id=2)
+        userrole=Role.objects.get(id=1)
         if user:
             logged_user=user[0]
             if logged_user.role.role=="admin":
@@ -213,9 +220,12 @@ def adminhandle(req):
                     }
                     context= {
                         'user' : User.objects.get(id=req.session['user']['id']),
+                        'music_count':Music.objects.count(),
+                        'user_count':User.objects.filter(role=userrole).count(),
+                        'artist_count':User.objects.filter(role=role).count(),
                         
                     }
-                return render(req,'admin.html',context)
+                return render(req,'welcomeadmin.html',context)
             return redirect('/admin')
     else:
         return('/home')
