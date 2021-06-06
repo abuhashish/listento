@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 import re
-
 from django.db.models.fields import BooleanField
 class UserManger(models.Manager):
     def basic_validator(self, postData):
@@ -26,6 +25,9 @@ class UserManger(models.Manager):
     def login_validator(self,postData):
         errors = {}
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        if not EMAIL_REGEX.match(postData['email']):    # test whether a field matches the pattern            
+            errors['email'] = "Invalid email address!"
+        return errors
 
 # Create your models here.
 class Role(models.Model):
@@ -37,6 +39,7 @@ class Gender(models.Model):
 
 
 class User(models.Model):
+    
     username=models.CharField(max_length=45)
     first_name=models.CharField(max_length=45)
     last_name=models.CharField(max_length=45)

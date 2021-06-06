@@ -287,13 +287,12 @@ input[type=text]:focus {
     </div>
 
     <!-- Login Form -->
-    {% if messages %}
-				<ul class="messages">    
-					{% for message in messages %}    
-						<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
-					{% endfor %}
-				</ul>
-				{% endif %}
+    {%if request.session.wrngemail %}
+    <p>{{request.session.wrngemail}}</p>
+    {%endif%}
+    {% if request.session.wrngpass %}
+    <P>{{request.session.wrngpass}}</P>
+    {%endif%}
     <form method="POST" action="logins">
         {% csrf_token %}
     <input type="text" id="username" class="fadeIn second" name="username" placeholder="login">

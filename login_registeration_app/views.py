@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.db.models import Count
 from django.core.paginator import Paginator , EmptyPage , PageNotAnInteger
 import bcrypt
-from .models import *
+from django.http import JsonResponse
 # Create your views here.
 def root(request):
     return redirect('/login')
@@ -16,6 +16,7 @@ def login (request):
         return render(request,"login.html")
     return redirect('/home')
 def logins(req):
+    req.session.clear()
     user = User.objects.filter(username = req.POST['username'])
     psswd = req.POST['passwd'] 
     if user:
@@ -32,13 +33,18 @@ def logins(req):
                 'userimg' : User.objects.get(id=req.session['user']['id']),
                 'allimgs' : User.objects.all()
             }
-        return render(req,'home.html',context)
-    return redirect('/')
+            return render(req,'home.html',context)
+        else:
+            req.session['wrngpass']="password is wrong"
+            return redirect('/')
+    else:
+        req.session['wrngemail']="email is wrong"
+        return redirect('/')
 def register(request):
     return render(request,'registeration.html')
 def home(req):
     if 'user' in req.session:
-        allmusic = Music.objects.all
+        allmusic = Music.objects.all()
         context = {
         'allmusic':allmusic
         }
@@ -70,7 +76,7 @@ def adduser(request):
             'fname':user.first_name,
             'lname':user.last_name,
         }
-                return redirect('/home')
+        return redirect('/home')
 def artists(request):
     users= User.objects.filter(role = Role.objects.get(id = 1))
     page = request.GET.get('page', 1)
@@ -92,6 +98,8 @@ def artists(request):
 def userprofile(req):
     user = User.objects.get(id=req.session['user']['id'])
     allmusic = Music.objects.filter(uploaded_by=user)
+    followings=user.userfollowings.all()
+    ratings=user.rates.all()
     queryset=LOL.objects.filter(user=user)
     if  queryset.exists():
         typex=1
@@ -100,7 +108,9 @@ def userprofile(req):
     context={
         'x': user,
         'allmusic':allmusic,
-        'type':typex
+        'type':typex,
+        'followings':followings,
+        'ratings':ratings
     }
     if user.role == Role.objects.get(id=2):
         return render(req,'userprofile.html',context)
@@ -123,6 +133,7 @@ def artistprofile(req,id):
         'me':me,
         'g':g,
         'number_of_followers': followers 
+        
     }
     return render(req,'artistpage.html',context)
 def addmusic(req,id):
@@ -134,13 +145,35 @@ def addmusic(req,id):
     duration = 3
     Music.objects.create(song_name = song_title , writer = song_writer ,composer = song_composer , duration = duration , music = mp3file , uploaded_by = user  )
     return redirect('/artistprofile/'+str(id))
+sum1=0
+sum2=0
 def songpage(req,id):
-    allmusic = Music.objects.filter(id=id)
-    
+    global sum1,sum2
+    z = Music.objects.get(id=id)
+    user=User.objects.get(id=req.session['user']['id'])
+    Ratingusers=z.rates.count()
+    for i in z.rates.all():
+        sum1=sum1+i.score
+        sum2=sum2+1
+    rate=int(sum1/sum2)
+    num=rate
+    if rate == 1:
+        rate="first"
+    elif rate == 2:
+        rate="second"
+    elif rate == 3:
+        rate="third"
+    elif rate == 4 :
+        rate="fourth"
+    elif rate== 5:
+        rate = "fifth"
     context = {
-        'allmusic':allmusic,
-       
-
+        'filter':user.rates.filter(music=z),
+        'i':z,
+        'rate':rate,
+        'user':user,
+        'num':num,
+        'users':Ratingusers
         }
     return render(req,'songpage.html',context)
 def logout(req):
@@ -164,7 +197,7 @@ def admin(req):
                                 'user' : User.objects.get(id=req.session['user']['id']),
                                 
                             }
-                return render(req,'admin.html',context)
+                return render(req,'welcomeadmin.html',context)
             else:
                 return redirect('/home')
     else:
@@ -175,6 +208,8 @@ def adminhandle(req):
     if req.method == "POST":
         user = User.objects.filter(username = req.POST['user'])
         psswd = req.POST['pass'] 
+        role=Role.objects.get(id=2)
+        userrole=Role.objects.get(id=1)
         if user:
             logged_user=user[0]
             if logged_user.role.role=="admin":
@@ -188,9 +223,12 @@ def adminhandle(req):
                     }
                     context= {
                         'user' : User.objects.get(id=req.session['user']['id']),
+                        'music_count':Music.objects.count(),
+                        'user_count':User.objects.filter(role=userrole).count(),
+                        'artist_count':User.objects.filter(role=role).count(),
                         
                     }
-                return render(req,'admin.html',context)
+                return render(req,'welcomeadmin.html',context)
             return redirect('/admin')
     else:
         return('/home')
@@ -288,3 +326,128 @@ def unfollow(request,id):
     x=Follower.objects.get(followeduser=user,followinguser=folower)
     x.delete()
     return redirect('/artistprofile/'+str(id))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def release(request):
+    context={
+        'allmusic':Music.objects.order_by('-created_at').all()[:10],
+        'msg':"Newest Releases"
+    }
+    return render (request,"release.html",context)
+
+def top10(request):
+    context={
+        'allmusic':Music.objects.all()[:10],
+        'msg':"Top 10 Music"
+    }
+    return render (request,"release.html",context)

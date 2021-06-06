@@ -11,6 +11,14 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Listento</title>
     
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- custom css & js -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'main.js' %}" defer></script>
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin: 0px;">
@@ -32,11 +40,11 @@
             
             </li>
             <li class="nav-item">
-            <a class="nav-link disabled" href="/logout">Logout</a>
+            <a class="nav-link " href="/logout">Logout</a>
             </li>
             {% if request.session.user.role == "admin" %}
             <li class="nav-item" style="margin-left: 90%;">
-              <a class="nav-link disabled" href="/admin">Admin Dashboard</a>
+              <a class="nav-link" href="/admin">Admin Dashboard</a>
               </li>
               {%endif%}
         </ul>
@@ -59,24 +67,22 @@
         <!-- Grid column -->
         <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
         <h6 class="text-uppercase mb-4 font-weight-bold">ListenTo Music Streaming</h6>
-        <p>You can now listen to your favert music for the most populer artist</p>
+        <p>You can now listen to your favorite music for the most populer artist</p>
         </div>
         <!-- Grid column -->
         <hr class="w-100 clearfix d-md-none">
         <!-- Grid column -->
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
         <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
+  
         <p>
-            <a href="#!">Albums</a>
+            <a href="/artists">Artists</a>
         </p>
         <p>
-            <a href="#!">Artists</a>
+            <a href="/release">New Release</a>
         </p>
         <p>
-            <a href="#!">New Release</a>
-        </p>
-        <p>
-            <a href="#!">Top 10 music</a>
+            <a href="/top10">Top 10 music</a>
         </p>
         </div>
         <!-- Grid column -->
