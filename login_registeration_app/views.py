@@ -137,12 +137,12 @@ def songpage(req,id):
     global sum1,sum2
     z = Music.objects.get(id=id)
     user=User.objects.get(id=req.session['user']['id'])
+    Ratingusers=z.rates.count()
     for i in z.rates.all():
         sum1=sum1+i.score
         sum2=sum2+1
     rate=int(sum1/sum2)
-    print(sum1)
-    print(rate)
+    num=rate
     if rate == 1:
         rate="first"
     elif rate == 2:
@@ -157,7 +157,9 @@ def songpage(req,id):
         'filter':user.rates.filter(music=z),
         'i':z,
         'rate':rate,
-        'user':user
+        'user':user,
+        'num':num,
+        'users':Ratingusers
         }
     return render(req,'songpage.html',context)
 def logout(req):

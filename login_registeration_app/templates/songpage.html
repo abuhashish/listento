@@ -86,6 +86,7 @@
 </div>
 {%if filter %}
 <div class="col text-center">
+    <p>Rating = {{num}} Stars</p>
     <form class="rate-form" action="/rate/{{i.id}}" method="POST" id="{{object.id}}">
         {% csrf_token %}
         <span  style=" background-color: inherit !important; border: 0 !important;"type="submit" class="fa fa-star fa-3x my-btn" name="first" id="first"></span>
@@ -96,9 +97,11 @@
     </form>
     <br>
     <div id="confirm-box"></div>
+    <p>Rated By {{users}} User.</p>
 </div>
 {%else%}
 <div class="col text-center">
+    <p>Rating = {{num}} Stars</p>
     <form class="rate-form" action="/rate/{{i.id}}" method="POST" id="{{object.id}}">
         {% csrf_token %}
         <button  style=" background-color: inherit !important; border: 0 !important;"type="submit" class="fa fa-star fa-3x my-btn" name="first" id="first"></button>
