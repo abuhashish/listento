@@ -22,24 +22,5 @@
     <span class="sr-only">Next</span>
     </a>
 </div>
-<main style="display: flex; margin-top: 100px; background-color: rgb(247, 244, 244); margin: 0px;">
-    <div class="form-group" >
-    <ul class="list-group list-group-item" style="background-color: rgb(231, 224, 224); margin-top: 50px;" >
-    <li class="list-group-item" style="text-align: center; color: cadetblue;"> New Release</li>
-    {%for i in allmusic%}
-    <li class="list-group-item" style="text-align: center;"><a href="/songpage/{{i.id}}" style="color: rgb(24, 24, 24);"> {{i.song_name}}</a></li>
-    {%endfor%}
-    </ul>
-</div>
-<div class="form-group">
-    
-    <ul class="list-group list-group-item" style="background-color: rgb(243, 236, 236); margin-top: 50px;">
-        <li class="list-group-item"style="text-align: center; color: cadetblue;" >TOP 10</li>
-        {%for i in allmusic%}
-        <li class="list-group-item" style="text-align: center;"><a href="/songpage/{{i.id}}" style="color: rgb(24, 24, 24);">{{i.song_name}}</a></li>
-        {%endfor%}
-    </ul>
 
-</div>
-</main>
 {%endblock%}
