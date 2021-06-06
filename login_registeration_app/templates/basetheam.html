@@ -58,28 +58,9 @@
               <input style="width:150px" class="form-control" id="txtSearch" name="txtSearch">
               </form>
             </li>
-<<<<<<< HEAD
             
             {% if request.session.user.role == "admin" %}
             <li class="nav-item" style="margin-left: 50%;">
-=======
-            <li>
-              <div class="input-group">
-                <div class="form-outline">
-                  <form action="search" method="POST">
-                  <input type="text"  class="form-control"  style="width: 200px;" name="searched" id="search"/>
-                  <label class="form-label" for="searched">Search</label>
-                </div>
-                  {%csrf_token%}
-                <input type="submit" name="search" value="Search" id="search">
-                </form>
-              </div>
-            </li>
-            {% if request.session.user.role == "admin" %}
-            <li class="nav-item" style="margin-left: 30%;">
-              <a class="nav-link disabled" href="/admin">Admin Dashboard</a>
-            <li class="nav-item" style="margin-left: 90%;">
->>>>>>> aeb1ec5288fd1fd5018f1516a6b2bf9924b65c42
               <a class="nav-link" href="/admin">Admin Dashboard</a>
               </li>
     
