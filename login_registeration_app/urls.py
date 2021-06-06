@@ -30,6 +30,7 @@ urlpatterns = [
         path('update/<int:id>',views.update),
         path('follow/<int:id>',views.follow),
         path('unfollow/<int:id>',views.unfollow),
+        path('search',views.search)
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,

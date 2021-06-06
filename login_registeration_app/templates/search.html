@@ -1,0 +1,18 @@
+{%extends 'basetheam.html'%}
+{%block content%}
+<center>
+    {%if searched %}
+    <h1>you have searched about {{searched}} </h1>
+    <br>
+    {%if value_to_search.count > 0 %}
+    {%for song in value_to_search%}
+        <h3 id="search-results"> <a href="/songpage/{{song.id}}">{{song.song_name}} </a></h3><br>
+    {%endfor%}
+    {%else%}
+        <h3>there is no data called {{searched}}</h3>
+    {%endif%}
+    {%else%}
+    <h1>Hey ! you forget to tpe somthing !</h1>
+    {%endif%}
+</center>
+{%endblock%}

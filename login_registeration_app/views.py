@@ -75,7 +75,7 @@ def adduser(request):
 def artists(request):
     users= User.objects.filter(role = Role.objects.get(id = 1))
     page = request.GET.get('page', 1)
-    paginator = Paginator (users, 5)
+    paginator = Paginator (users, 4)
 
     try:
         artists = paginator.page(page)
@@ -285,3 +285,22 @@ def unfollow(request,id):
     x=Follower.objects.get(followeduser=user,followinguser=folower)
     x.delete()
     return redirect('/artistprofile/'+str(id))
+
+
+
+
+
+
+
+
+
+
+
+def search(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        value_to_search = Music.objects.filter(song_name = searched)
+        return render(request,'search.html',{'searched':searched, 'value_to_search':value_to_search})
+    else:
+        return render(request,'search.html',{})
+
